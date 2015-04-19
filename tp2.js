@@ -1,15 +1,10 @@
-
-//1. Le bouton ne marche pas!!!
-
-
 function init(){
-   document.getElementById("b").innerHTML = 
+
+     document.getElementById("b").innerHTML = 
    '<table>\
       <tr>\
 	<td>\
-	<button id="100" onclick="clic(100);">\
-        Nouvelle Partie</button>\
-	</td>\
+	<button onclick="init();">Nouvelle Partie</button><br><br>\
 	<td></td>\
 	<td id="53" onclick="clic(53);">\
 	<img src="cards/back.svg"></td>\
@@ -17,55 +12,60 @@ function init(){
       </tr>\
     </table>'
 	+ grilleHTML(6,6);
+
     //Par cette boucle on remplie les grilles par les cartes vides
     for (var i=0; i<30; i+=6){
 	for (var j=0; j<5; ++j){
 	    document.getElementById(i+j).innerHTML=
-	    "<img src=\"cards/empty.svg\">";
+		"<img src=\"cards/empty.svg\">";
 	    document.getElementById(i+j).value = 52;
 	}
     }	
-    document.getElementById(35).innerHTML = +0;
-};
+    document.getElementById(35).innerHTML = +0; 
 
-//Fonction grilleHTML(m,n):
-//Creér une grille de m rangées et n collonnes
-function grilleHTML(m,n){
-    //k: pour la numérotation de l'"id"
-    var k = 0;   
-    var grille = "\<table>\n";
-    for (var i = 0; i < m; ++i){
-        //Les deux conditions pour i et j est considérée pour
-	//separer les grilles qui contienne les cartes
-	//(avec l'evénement d'onclick) et des grilles qui contienne
-	//les résultats (sans l'evénement d'onclick)
-	if (i == m-1){
-        grilleHTML= grille + "<tr>\n";
-        for (var j = 0; j < n; ++j){
-            grille = grille + "<td id=\""+ k +"\"></td>\n";	
-            k = k+1;
-        }
-        grille = grille + "</tr>\n";
-        }
-        else{
-        grilleHTML= grille + "<tr>\n";
-        for (j = 0; j < n; ++j){
-            if (j == n-1){
-            grille = grille + "<td id=\""+ k +"\"\"></td>\n";	
-            k = k+1;
-            }else{
-            grille = grille + "<td id=\""+ k +"\"\
-		onclick=\"clic("+ k +")\"></td>\n";	
-            k = k+1;
+    //Fonction grilleHTML(m,n):
+    //Creér une grille de m rangées et n collonnes
+    function grilleHTML(m,n){
+	//k: pour la numérotation de l'"id"
+	var k = 0;   
+	var grille = "\<table>\n";
+	for (var i = 0; i < m; ++i){
+            //Les deux conditions pour i et j est considérée pour
+	    //separer les grilles qui contienne les cartes
+	    //(avec l'evénement d'onclick) et des grilles 
+	    //qui contienne
+	    //les résultats (sans l'evénement d'onclick)
+	    if (i == m-1){
+		grilleHTML= grille + "<tr>\n";
+		for (var j = 0; j < n; ++j){
+		    grille = grille + "<td id=\""+ k +"\"></td>\n";	
+		    k = k+1;
+		}
+		grille = grille + "</tr>\n";
             }
-        }
-        grille = grille + "</tr>\n";  
-        }
+            else{
+		grilleHTML= grille + "<tr>\n";
+		for (j = 0; j < n; ++j){
+		    if (j == n-1){
+			grille = grille + "<td id=\""+ k +"\"\"></td>\n";	
+			k = k+1;
+		    }else{
+			grille = grille + "<td id=\""+ k +"\"\
+			onclick=\"clic("+ k +")\"></td>\n";	
+			k = k+1;
+		    }
+		}
+		grille = grille + "</tr>\n";  
+            }
 
-    }
-    grille = grille + "</table>";
-    return grille;
+	}
+	grille = grille + "</table>";
+	return grille;
+    };
+
+
 };
+
 
 //Dans cette partie du code on crée un paquet de carte mélagée
 var paquet = Array(52);
@@ -125,14 +125,11 @@ function clic(id){
 	document.getElementById(id).innerHTML = 
 	document.getElementById(53).innerHTML;
 	document.getElementById(id).value = paquet[banqCart-1];
-	//document.getElementById(53).innerHTML =
-	  //  "<img src=\"cards/back.svg\">";
 	document.getElementById(53).innerHTML = 
 	    "<img src=\"cards/" + carte(paquet[banqCart]) + ".svg\">";
 	idPrec = id;
 	banqCart += 1;
-	//document.getElementById(5).innerHTML =
-	  //  "Calcul";
+	
 	calculPoints();
     }
 
@@ -167,8 +164,6 @@ function clic(id){
 	idPrec = id;
 	calculPoints();
      }
-
-    
 };
 
 
@@ -205,7 +200,7 @@ function calculPoints(){
 	document.getElementById(posH+5).innerHTML =
 	    rangeResultat(tabCarteH);
        if (document.getElementById(posH+5).innerHTML != ""){
-	   pointTotal = pointTotal + document.getElementById(posH+5).innerHTML;
+	   pointTotal = pointTotal + +document.getElementById(posH+5).innerHTML;
        }
 	        
     }
