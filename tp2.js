@@ -174,7 +174,9 @@ function clic(id){
 
 //Fonction calculPoint(): calculer les point de chaque rangé et
 //de chaque colonne
-//function calculPoints(){
+var tabCarteH = [];
+var tabCarteV = [];
+function calculPoints(){
 
     //Pour parcourir dans les rangées et les colonnes de la grille
     var alignements = [{pas:+1, departs: [0,6,12,18,24]},
@@ -185,12 +187,13 @@ function clic(id){
 
     var pasV = alignements[1].pas;
     var departsV = alignements[1].departs;
-
-
-    for (var i=0; i<departsH.length; ++i){
+    
+    var pointTotal = 0;
+   
+   for (var i=0; i<departsH.length; ++i){
 	var posH = departsH[i];
 	
-	var tabCarteH = [];
+	tabCarteH = [];
 	for(var j=0; j<5; ++j){
 	    if(document.getElementById(posH+j*pasH).value != 52){
 		tabCarteH.push(document.
@@ -200,40 +203,57 @@ function clic(id){
 	tabCarteH = trier(tabCarteH);
 	
 	document.getElementById(posH+5).innerHTML =
-	    //rangeResultat(tabCarteH);
-	    freqElem(tabCarteH)[0].freq;
-	    //tabCarteCoul(tabCarteH);
-	    
+	    rangeResultat(tabCarteH);
+       if (document.getElementById(posH+5).innerHTML != ""){
+	   pointTotal = pointTotal + document.getElementById(posH+5).innerHTML;
+       }
+	        
     }
+    
 
-
-    /*for (i=0; i<departsV.length; ++i){
+  for (var i=0; i<departsV.length; ++i){
 	var posV = departsV[i];
 	
-	var tabCarteV = [];
+	tabCarteV = [];
 	for(var j=0; j<5; ++j){
 	    if(document.getElementById(posV+j*pasV).value != 52){
-		tabCarteV.push(document.
+		tabCarteH.push(document.
 			       getElementById(posV+j*pasV).value);
 	    }
 	}
 	tabCarteV = trier(tabCarteV);
 	
-	document.getElementById(posV+5).innerHTML =
-	    rangeResultat(tabCarteV);
-    }*/
+	document.getElementById(posV+30).innerHTML =
+	   colloneResultat(tabCarteV);
+	        
+    }
+
+    document.getElementById(35).innerHTML = pointTotal;
+
+};
+
+function colloneResultat(tab){
+    var resultatV = [];
+    resultatV.push(paireDlPaire(tabCarteV));
+    resultatV.push(brelan(tabCarteV));
+    resultatV.push(quinte(tabCarteV));
+    resultatV.push(flush(tabCarteV));
+    resultatV.push(fullHouse(tabCarteV));
+    resultatV.push(carre(tabCarteV));
+    resultatV.push(quinteFlush(tabCarteV));
+    resultatV.push(quinteFlushRoyale(tabCarteV));
+    
+    resultatV = trier(resultatV);
+
+    if(resultatV[resultatV.length-1] == 0){
+	   return "";
+    }else{
+	return resultatV[resultatV.length-1];
+    }
+};
 
 
-
-   /* document.getElementById(35).innerHTML =
-	+document.getElementById(5).innerHTML+
-	+document.getElementById(11).innerHTML
-	+document.getElementById(17).innerHTML
-	+document.getElementById(23).innerHTML
-	+document.getElementById(29).innerHTML;*/
-//};
-
-
+function rangeResultat(tab){
     var resultatH = [];
     resultatH.push(paireDlPaire(tabCarteH));
     resultatH.push(brelan(tabCarteH));
@@ -246,12 +266,10 @@ function clic(id){
     
     resultatH = trier(resultatH);
 
-function rangeResultat(tab){
-
-    if(tab[tab.length-1] == 0){
+    if(resultatH[resultatH.length-1] == 0){
 	   return "";
     }else{
-	return tab[tab.length-1];
+	return resultatH[resultatH.length-1];
     }
 };
 
@@ -352,7 +370,7 @@ function  carre(tab){
 
 
 function quinteFlush(tab){
-    if(flush(tab) == 20 && quante(tab) == 15){
+    if(flush(tab) == 20 && quinte(tab) == 15){
 	return 75;	
     }
 return 0;
@@ -387,19 +405,21 @@ function trier(tab) {
 //Fonction tabCarteCoul(tab): calculer les couleurs des cartes
 //dans le tableau "tab" qui contient les codes de cartes
 function tabCarteCoul(tab){
+    var tabTemp = [];
     for (var i=0; i<tab.length; ++i){
-	tab[i] = tab[i]%4;
+	tabTemp.push(tab[i]%4);
     }
-    return tab;
+    return tabTemp;
 };
 
 //Fonction tabCarteVal(tab): calculer les valeurs des cartes
 //dans le tableau "tab" qui contient les codes de cartes
 function tabCarteVal(tab){
+    var tabTemp =[];
     for (var i=0; i<tab.length; ++i){
-	tab[i] = tab[i]>>2;
+	tabTemp.push(tab[i]>>2);
     }
-    return tab;
+    return tabTemp;
 };
 
 //Fonction ferquElem(tab): elle prend un tableau et returne
