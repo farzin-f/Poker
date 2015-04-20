@@ -66,7 +66,6 @@ function init(){
 
 };
 
-
 //Dans cette partie du code on crée un paquet de carte mélagée
 var paquet = Array(52);
 for (var i = 0; i < paquet.length; ++i){
@@ -97,10 +96,6 @@ var banqCart = 0;
 //Fonction clic(id): le corps du code qui fait un action selon le id
 //qu'elle reçoit après que l'utilisateur clique sur une carte
 function clic(id){
-    //alert(id);
-    if (id == 100){
-    init();
-    }
     
     //Cette partie distribue les cartes de paquet sur les endroits
     //vides de la grille
@@ -112,7 +107,7 @@ function clic(id){
 	    "<img src=\"cards/" + carte(paquet[banqCart]) + ".svg\">";
 	
 	banqCart += 1;
-	//idPrec = id;
+
     }
 
     //Pour mettre les cartes dans la grille
@@ -164,6 +159,12 @@ function clic(id){
 	idPrec = id;
 	calculPoints();
      }
+    //Cette condition déclare la fin du jeu avec les points gangés
+    if (banqCart == 26){
+	alert("Votre pointage final est " + 
+	      document.getElementById(35).innerHTML);
+	init();
+    }
 };
 
 
@@ -180,12 +181,9 @@ function calculPoints(){
     var pasH = alignements[0].pas;
     var departsH = alignements[0].departs;
 
-    var pasV = alignements[1].pas;
-    var departsV = alignements[1].departs;
-    
-    var pointTotal = 0;
+    var pointTotalH = 0;
    
-   for (var i=0; i<departsH.length; ++i){
+    for (var i=0; i<departsH.length; ++i){
 	var posH = departsH[i];
 	
 	tabCarteH = [];
@@ -199,20 +197,25 @@ function calculPoints(){
 	
 	document.getElementById(posH+5).innerHTML =
 	    rangeResultat(tabCarteH);
-       if (document.getElementById(posH+5).innerHTML != ""){
-	   pointTotal = pointTotal + +document.getElementById(posH+5).innerHTML;
+  
+	if (document.getElementById(posH+5).innerHTML != ""){
+	   pointTotalH = pointTotalH + +document.getElementById(posH+5).innerHTML;
        }
 	        
     }
     
+    var pasV = alignements[1].pas;
+    var departsV = alignements[1].departs;
 
-  for (var i=0; i<departsV.length; ++i){
+    var pointTotalV = 0;    
+
+    for (var i=0; i<departsV.length; ++i){
 	var posV = departsV[i];
 	
 	tabCarteV = [];
 	for(var j=0; j<5; ++j){
 	    if(document.getElementById(posV+j*pasV).value != 52){
-		tabCarteH.push(document.
+		tabCarteV.push(document.
 			       getElementById(posV+j*pasV).value);
 	    }
 	}
@@ -220,10 +223,17 @@ function calculPoints(){
 	
 	document.getElementById(posV+30).innerHTML =
 	   colloneResultat(tabCarteV);
+
+	if (document.getElementById(posV+30).innerHTML != ""){
+	    pointTotalV = pointTotalV + +document.getElementById(posV+30).innerHTML;
+	}
+
 	        
     }
 
-    document.getElementById(35).innerHTML = pointTotal;
+
+
+    document.getElementById(35).innerHTML = pointTotalH + pointTotalV;
 
 };
 
